@@ -1,0 +1,106 @@
+#node-border {
+    background-color: rgb(56, 56, 56);
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.node {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+#input {
+    align-items: center;
+}
+
+#output {
+    align-items: center;
+}
+
+#selection-border {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-left-color: rgba(53, 241, 177, 255);
+    border-right-color: rgba(53, 241, 177, 255);
+    border-top-color: rgba(53, 241, 177, 255);
+    border-bottom-color: rgba(53, 241, 177, 255);
+}
+
+:hover > #selection-border {
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+}
+
+:selected > #selection-border {
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+}
+
+#divider {
+    max-height: none;
+    background-color: rgba(40, 40, 40, 255);
+    min-height: 1px;
+}
+
+.Normal #input {
+    background-color: rgba(133, 135, 134, 0.4);
+}
+
+.Orange #input {
+    background-color: rgba(255, 159, 28, 0.4);
+}
+
+.Miut #output {
+    background-color: rgba(200, 224, 135, 0.4);
+}
+
+.Green #output {
+    background-color: rgba(0, 67, 70, 0.4);
+}
+
+.Normal #title-label {
+    color: rgba(133, 135, 134, 255);
+}
+
+.Orange #title-label {
+    color: rgba(255, 159, 28, 255);
+}
+
+.Miut #title-label {
+    color: rgba(200, 224, 135, 255);
+}
+
+.Green #title-label {
+    color: rgba(9, 111, 115, 255);
+}

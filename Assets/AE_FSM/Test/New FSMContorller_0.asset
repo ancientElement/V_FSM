@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bac8007dd04da848bb241efddd58ec8, type: 3}
+  m_Name: New FSMContorller_0
+  m_EditorClassIdentifier: 
+  states:
+  - rect:
+      serializedVersion: 2
+      x: 2541.3333
+      y: -1117.3334
+      width: 480
+      height: 90
+    defualtState: 0
+    name: AnyState
+    scriptName: 
+  - rect:
+      serializedVersion: 2
+      x: 1511.9999
+      y: -130.66666
+      width: 480
+      height: 90
+    defualtState: 0
+    name: EnterState
+    scriptName: 
+  - rect:
+      serializedVersion: 2
+      x: 1511.9999
+      y: 481.59152
+      width: 480
+      height: 90
+    defualtState: 1
+    name: TestA
+    scriptName: TestA
+  - rect:
+      serializedVersion: 2
+      x: 808.8
+      y: 525.3333
+      width: 480
+      height: 90
+    defualtState: 0
+    name: TestC
+    scriptName: TestC
+  - rect:
+      serializedVersion: 2
+      x: 939.99994
+      y: -130.66666
+      width: 480
+      height: 90
+    defualtState: 0
+    name: TestB
+    scriptName: TestB
+  paramters:
+  - name: A->B
+    value: 0
+    paramterType: 2
+  - name: B->A
+    value: 0
+    paramterType: 2
+  - name: B->C
+    value: 0
+    paramterType: 2
+  - name: C->B
+    value: 0
+    paramterType: 2
+  - name: C->A
+    value: 0
+    paramterType: 2
+  - name: A->C
+    value: 0
+    paramterType: 2
+  trasitions:
+  - fromState: TestB
+    toState: TestC
+    conditions: []
+  - fromState: TestB
+    toState: TestA
+    conditions: []
+  - fromState: TestC
+    toState: TestB
+    conditions: []
+  - fromState: TestA
+    toState: TestC
+    conditions: []

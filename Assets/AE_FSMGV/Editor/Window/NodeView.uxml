@@ -1,0 +1,22 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <Style src="project://database/Assets/AE_FSMGV/Editor/Window/NodeViewStyle.uss?fileID=7433441132597879392&amp;guid=f12d1b6a638279743a950d6475cd052d&amp;type=3#NodeViewStyle" />
+    <ui:VisualElement name="node-border" style="padding-left: 2px; padding-right: 2px; padding-top: 2px; padding-bottom: 2px; background-color: rgba(56, 56, 56, 0.75);">
+        <ui:VisualElement name="contents" style="flex-direction: column-reverse;">
+            <ui:VisualElement name="top" style="flex-direction: column;">
+                <ui:VisualElement name="input" style="flex-grow: 1;" />
+                <ui:VisualElement name="divider" class="vertical" />
+                <ui:VisualElement name="title" style="align-items: center; flex-grow: 1;">
+                    <ui:Label name="title-label" text="New State_3" class="unity-text-element unity-label" />
+                    <ui:VisualElement name="title-button-container">
+                        <ui:VisualElement name="collapse-button">
+                            <ui:VisualElement name="icon" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="divider" class="horizontal" />
+                <ui:VisualElement name="output" style="flex-grow: 1;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="selection-border" picking-mode="Ignore" style="border-top-left-radius: 5px; border-bottom-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px;" />
+</ui:UXML>

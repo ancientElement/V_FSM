@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <uie:Toolbar style="flex-grow: 0; height: auto;">
+        <uie:ToolbarMenu display-tooltip-when-elided="true" text="Asset" />
+    </uie:Toolbar>
+    <AE_FSMGV.SplitView fixed-pane-initial-dimension="200" style="height: auto; width: auto;">
+        <ui:VisualElement name="left-panel" style="flex-shrink: 1; flex-grow: 1; width: auto; height: auto;">
+            <AE_FSMGV.ParamterView style="flex-grow: 1;">
+                <ui:IMGUIContainer name="ParamterLayer" style="flex-grow: 1;" />
+            </AE_FSMGV.ParamterView>
+        </ui:VisualElement>
+        <ui:VisualElement name="right-panel" style="flex-shrink: 1; height: auto; width: auto;">
+            <AE_FSMGV.StateAreaGraphView focusable="true" style="flex-grow: 1;" />
+        </ui:VisualElement>
+    </AE_FSMGV.SplitView>
+</ui:UXML>
