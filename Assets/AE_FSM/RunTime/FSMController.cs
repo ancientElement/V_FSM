@@ -220,13 +220,20 @@ namespace AE_FSM
             isExitingState = false;
             yield break;
         }
+        public void WaitSwitchState(string state)
+        {
+            WaitSwitchState(states[state]);
+        }
 
         /// <summary>
         /// 直接切换
         /// </summary>
         /// <param name="stateNode"></param>
-        public void SwitchState(FSMStateNode stateNode)
+        public void SwitchState(FSMStateNode stateNode, bool toself = false)
         {
+            if (!toself)
+                if (currentState == stateNode) return;
+
             if (stateNode == null) return;
 
             if (currentState != null)
@@ -235,6 +242,10 @@ namespace AE_FSM
             currentState = stateNode;
 
             currentState.Enter();
+        }
+        public void SwitchState(string state, bool toself = false)
+        {
+            SwitchState(states[state], toself);
         }
     }
 }

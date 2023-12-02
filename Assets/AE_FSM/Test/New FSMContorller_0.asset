@@ -15,8 +15,8 @@ MonoBehaviour:
   states:
   - rect:
       serializedVersion: 2
-      x: 1571.3333
-      y: -392.33344
+      x: 1622.1902
+      y: -225.47624
       width: 480
       height: 90
     defualtState: 0
@@ -25,7 +25,7 @@ MonoBehaviour:
   - rect:
       serializedVersion: 2
       x: 1635.9999
-      y: -90.66666
+      y: -42.09529
       width: 480
       height: 90
     defualtState: 0
@@ -33,51 +33,30 @@ MonoBehaviour:
     scriptName: 
   - rect:
       serializedVersion: 2
-      x: 1648.8
-      y: 561.3333
+      x: 1634.617
+      y: 370.25714
+      width: 480
+      height: 90
+    defualtState: 0
+    name: Move
+    scriptName: Move
+  - rect:
+      serializedVersion: 2
+      x: 1624.5872
+      y: 141.36783
       width: 480
       height: 90
     defualtState: 1
-    name: TestC
-    scriptName: TestC
+    name: Idle
+    scriptName: Idle
   - rect:
       serializedVersion: 2
-      x: 901.99994
-      y: 502
+      x: 2244.4119
+      y: 253.96481
       width: 480
       height: 90
     defualtState: 0
-    name: TestB
-    scriptName: TestB
-  - rect:
-      serializedVersion: 2
-      x: 846.48
-      y: -40.600098
-      width: 480
-      height: 90
-    defualtState: 0
-    name: TestA
-    scriptName: TestA
-  paramters:
-  - name: A->B
-    value: 0
-    paramterType: 2
-  - name: B->A
-    value: 0
-    paramterType: 2
-  - name: B->C
-    value: 0
-    paramterType: 2
-  - name: C->B
-    value: 0
-    paramterType: 2
-  - name: C->A
-    value: 0
-    paramterType: 2
-  - name: A->C
-    value: 0
-    paramterType: 2
-  trasitions:
-  - fromState: TestB
-    toState: TestC
-    conditions: []
+    name: Attack
+    scriptName: Attack
+  paramters: []
+  trasitions: []

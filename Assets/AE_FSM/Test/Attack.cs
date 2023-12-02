@@ -1,7 +1,7 @@
 ﻿using AE_FSM;
 using UnityEngine;
 
-public class TestC : IFSMState
+public class Attack : IFSMState
 {
     public void Enter(FSMController controller)
     {
@@ -9,7 +9,10 @@ public class TestC : IFSMState
     }
     public void Update(FSMController controller)
     {
-        //Debug.Log(this.GetType().ToString() + controller.gameObject.name + "sss" + "Update");
+        if (!Input.GetMouseButton(0))
+        {
+            controller.SwitchState("Idle");
+        }
     }
     public void LaterUpdate(FSMController controller)
     {

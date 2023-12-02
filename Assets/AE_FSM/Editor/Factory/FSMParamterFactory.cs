@@ -106,7 +106,7 @@ namespace AE_FSM
 
             foreach (FSMTranslationData itemTrasition in controller.trasitions)
             {
-                if (itemTrasition.conditions.Count() == 0) { continue; }
+                if ( itemTrasition.conditions == null || itemTrasition.conditions.Count() == 0) { continue; }
                 foreach (FSMConditionData itemCondition in itemTrasition.conditions)
                 {
                     if (itemCondition.paramterName == parameterData.name)

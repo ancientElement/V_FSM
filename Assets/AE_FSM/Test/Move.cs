@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestA : IFSMState
+public class Move : IFSMState
 {
     public void Enter(FSMController controller)
     {
@@ -12,7 +12,14 @@ public class TestA : IFSMState
     }
     public void Update(FSMController controller)
     {
-        //Debug.Log(this.GetType().ToString() + controller.gameObject.name + "sss" + "Update");
+        if (!Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+        {
+            controller.SwitchState("Idle");
+        }
+        if (Input.GetMouseButton(0))
+        {
+            controller.SwitchState("Attack");
+        }
     }
     public void LaterUpdate(FSMController controller)
     {
