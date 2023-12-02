@@ -15,8 +15,8 @@ MonoBehaviour:
   states:
   - rect:
       serializedVersion: 2
-      x: 2541.3333
-      y: -1117.3334
+      x: 1571.3333
+      y: -392.33344
       width: 480
       height: 90
     defualtState: 0
@@ -24,8 +24,8 @@ MonoBehaviour:
     scriptName: 
   - rect:
       serializedVersion: 2
-      x: 1511.9999
-      y: -130.66666
+      x: 1635.9999
+      y: -90.66666
       width: 480
       height: 90
     defualtState: 0
@@ -33,31 +33,31 @@ MonoBehaviour:
     scriptName: 
   - rect:
       serializedVersion: 2
-      x: 1511.9999
-      y: 481.59152
+      x: 1648.8
+      y: 561.3333
       width: 480
       height: 90
     defualtState: 1
-    name: TestA
-    scriptName: TestA
-  - rect:
-      serializedVersion: 2
-      x: 808.8
-      y: 525.3333
-      width: 480
-      height: 90
-    defualtState: 0
     name: TestC
     scriptName: TestC
   - rect:
       serializedVersion: 2
-      x: 939.99994
-      y: -130.66666
+      x: 901.99994
+      y: 502
       width: 480
       height: 90
     defualtState: 0
     name: TestB
     scriptName: TestB
+  - rect:
+      serializedVersion: 2
+      x: 846.48
+      y: -40.600098
+      width: 480
+      height: 90
+    defualtState: 0
+    name: TestA
+    scriptName: TestA
   paramters:
   - name: A->B
     value: 0
@@ -79,14 +79,5 @@ MonoBehaviour:
     paramterType: 2
   trasitions:
   - fromState: TestB
-    toState: TestC
-    conditions: []
-  - fromState: TestB
-    toState: TestA
-    conditions: []
-  - fromState: TestC
-    toState: TestB
-    conditions: []
-  - fromState: TestA
     toState: TestC
     conditions: []
