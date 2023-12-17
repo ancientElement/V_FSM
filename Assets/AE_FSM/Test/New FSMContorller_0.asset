@@ -42,8 +42,8 @@ MonoBehaviour:
     scriptName: Move
   - rect:
       serializedVersion: 2
-      x: 1624.5872
-      y: 141.36783
+      x: 1664.5874
+      y: 168.0345
       width: 480
       height: 90
     defualtState: 1
@@ -58,5 +58,14 @@ MonoBehaviour:
     defualtState: 0
     name: Attack
     scriptName: Attack
-  paramters: []
-  trasitions: []
+  paramters:
+  - name: New Float_0
+    value: 0
+    paramterType: 0
+  trasitions:
+  - fromState: Idle
+    toState: Move
+    conditions:
+    - tragetValue: 0
+      paramterName: New Float_0
+      compareType: 0
