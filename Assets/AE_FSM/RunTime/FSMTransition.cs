@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 namespace AE_FSM
@@ -20,8 +19,7 @@ namespace AE_FSM
             foreach (FSMConditionData item in translationData.conditions)
             {
                 FSMCondition condition = new FSMCondition(item, this.controller);
-                condition.onConditionMeet += this.CheckAllConditionMeet;
-                this.conditions.Add(condition);
+                this.conditions.Add(condition); 
             }
 
             if (controller.states.ContainsKey(translationData.toState))
@@ -44,20 +42,13 @@ namespace AE_FSM
 
             if (toStateNode == null) { Debug.Log("没有目标状态"); return; }
 
-            //起始状态不是当前状态 也不是any不可切换
-            if (translationData.fromState != controller.currentState.stateNodeData.name && translationData.fromState != FSMConst.anyState)
-            {
-                return;
-            }
-
             //起始状态 是 目标状态
             if (controller.currentState.stateNodeData.name == translationData.toState)
             {
                 return;
             }
 
-            Debug.Log(controller.currentState.stateNodeData.name + "----" + toStateNode.stateNodeData.name);
-            controller.WaitSwitchState(toStateNode);
+            controller.SwitchState(toStateNode);
         }
     }
 }

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEditorInternal;
 using UnityEngine;
 using static UnityEditor.Progress;
+using static UnityEditorInternal.VersionControl.ListControl;
 
 namespace AE_FSM
 {
@@ -41,10 +43,10 @@ namespace AE_FSM
         /// 状态
         /// </summary>
         internal Dictionary<string, FSMStateNode> states = new Dictionary<string, FSMStateNode>();
-        /// <summary>
-        /// 过渡
-        /// </summary>
-        internal List<FSMTransition> transitions = new List<FSMTransition>();
+        ///// <summary>
+        ///// 过渡
+        ///// </summary>
+        //internal List<FSMTransition> transitions = new List<FSMTransition>();
 
         /// <summary>
         /// 默认状态
@@ -54,15 +56,24 @@ namespace AE_FSM
         /// 当前状态
         /// </summary>
         public FSMStateNode currentState { get; private set; } = null;
+        /// <summary>
+        /// 上一个状态
+        /// </summary>
+        public FSMStateNode preState { get; private set; } = null;
 
         /// <summary>
         /// 退出时间
         /// </summary>
-        [Range(0.05f, 10f)] public float exitTime = 0.1f;
+        [Range(0.05f, 10f)] public float DefaultExitTime = 0.1f;
         /// <summary>
         /// 退出状态
         /// </summary>
         public bool isExitingState;
+        /// <summary>
+        /// 是否在切换
+        /// </summary>
+        private bool isSwitching;
+        public bool IsSwitching => isSwitching;
 
         /// <summary>
         /// 运行时 和 _ 的配置文件
@@ -75,11 +86,6 @@ namespace AE_FSM
                 { return _runTimeFSMController; }
                 return runTimeFSMController;
             }
-        }
-
-        private void Start()
-        {
-            Init();
         }
 
         private void Update()
@@ -140,12 +146,20 @@ namespace AE_FSM
             }
 
             //过渡
-
-            foreach (var item in _runTimeFSMController.trasitions)
+            for (int i = 0; i < _runTimeFSMController.states.Count; i++)
             {
-                FSMTransition transition = new FSMTransition(item, this);
-                transitions.Add(transition);
+                foreach (FSMTranslationData item in _runTimeFSMController.states[i].trasitions)
+                {
+                    FSMTransition transition = new FSMTransition(item, this);
+                    states[item.fromState].transitions.Add(transition);
+                }
             }
+
+            //foreach (var item in _runTimeFSMController.trasitions)
+            //{
+            //    FSMTransition transition = new FSMTransition(item, this);
+            //    transitions.Add(transition);
+            //}
 
             //切换到默认状态
             SwitchState(defaultState);
@@ -156,12 +170,9 @@ namespace AE_FSM
         /// </summary>
         public void CheckTransfrom()
         {
-            foreach (FSMTransition item in transitions)
+            foreach (FSMTransition item in currentState.transitions)
             {
-                if (item.translationData.fromState == currentState.stateNodeData.name || item.translationData.fromState == FSMConst.anyState)
-                {
-                    item.CheckAllConditionMeet();
-                }
+                item.CheckAllConditionMeet();
             }
         }
 
@@ -203,33 +214,26 @@ namespace AE_FSM
 
         #endregion
 
-        /// <summary>
-        /// 有退出时间的切换
-        /// </summary>
-        /// <param name="stateNode"></param>
-        public void WaitSwitchState(FSMStateNode stateNode)
+
+        public void SwitchState(string state, float exitTime = 0f, bool toself = false)
         {
-            isExitingState = true;
-            StopAllCoroutines();
-            StartCoroutine(DoWaitSwitchState(stateNode));
+            isSwitching = true;
+            SwitchState(states[state], exitTime, toself);
         }
-        private IEnumerator DoWaitSwitchState(FSMStateNode stateNode)
+
+        public void SwitchState(FSMStateNode stateNode, float exitTime = 0f, bool toself = false)
         {
-            yield return new WaitForSeconds(exitTime);
-            SwitchState(stateNode);
-            isExitingState = false;
-            yield break;
-        }
-        public void WaitSwitchState(string state)
-        {
-            WaitSwitchState(states[state]);
+            if (exitTime == 0f)
+                SwitchStateDirect(stateNode, toself);
+            else
+                SwitchStateWait(stateNode, exitTime);
         }
 
         /// <summary>
         /// 直接切换
         /// </summary>
         /// <param name="stateNode"></param>
-        public void SwitchState(FSMStateNode stateNode, bool toself = false)
+        private void SwitchStateDirect(FSMStateNode stateNode, bool toself = false)
         {
             if (!toself)
                 if (currentState == stateNode) return;
@@ -239,13 +243,33 @@ namespace AE_FSM
             if (currentState != null)
                 currentState.Exit();
 
+            preState = currentState;
             currentState = stateNode;
 
             currentState.Enter();
+
+            isSwitching = false;
         }
-        public void SwitchState(string state, bool toself = false)
+
+        /// <summary>
+        /// 有退出时间的切换
+        /// </summary>
+        /// <param name="stateNode"></param>
+        private void SwitchStateWait(FSMStateNode stateNode, float exitTime = -1f)
         {
-            SwitchState(states[state], toself);
+            if (exitTime == -1f) exitTime = DefaultExitTime;
+            isExitingState = true;
+            StopAllCoroutines();
+            StartCoroutine(DoWaitSwitchState(stateNode, exitTime));
+        }
+
+        private IEnumerator DoWaitSwitchState(FSMStateNode stateNode, float exitTime)
+        {
+            yield return new WaitForSeconds(exitTime);
+            SwitchStateDirect(stateNode);
+            isExitingState = false;
+            isSwitching = false;
+            yield break;
         }
     }
 }

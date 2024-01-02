@@ -1,11 +1,15 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 namespace AE_FSM
 {
     public class TranslationLayer : GraphLayers
     {
+        private bool addSelectAction;
+
         public TranslationLayer(FSMEditorWindow fSMEditorWindow) : base(fSMEditorWindow)
         {
         }
@@ -14,6 +18,15 @@ namespace AE_FSM
         {
             base.OnGUI(rect);
 
+            if (!addSelectAction)
+            {
+                FSMTranslationInspectorHelper.Instance.AddSelectAction((item) =>
+                {
+                    this.Context.SelectTransition = item;
+                    addSelectAction = true;
+                });
+            }
+
             FSMStateNodeData defualtState = this.Context.RunTimeFSMContorller.states.Where(x => x.defualtState).FirstOrDefault();
             FSMStateNodeData enterState = this.Context.RunTimeFSMContorller.states.Where(x => x.name == FSMConst.enterState).FirstOrDefault();
 
@@ -21,9 +34,12 @@ namespace AE_FSM
             DrawTransition(enterState, defualtState, Color.yellow);
 
             //其他状态
-            foreach (FSMTranslationData item in this.Context.RunTimeFSMContorller.trasitions)
+            foreach (FSMStateNodeData item_state in this.Context.RunTimeFSMContorller.states)
             {
-                DrawTransition(item.fromState, item.toState, item == this.Context.SelectTransition ? ColorConst.Select_Color : Color.white);
+                foreach (FSMTranslationData item_transition in item_state.trasitions)
+                {
+                    DrawTransition(item_transition.fromState, item_transition.toState, item_transition == this.Context.SelectTransition ? ColorConst.Select_Color : Color.white);
+                }
             }
 
             //绘制预览
@@ -58,33 +74,34 @@ namespace AE_FSM
         private void CheckTransitionClick()
         {
             if (EventUtility.IsMouseUp(0))
-                foreach (FSMTranslationData item in this.Context.RunTimeFSMContorller.trasitions)
+                foreach (FSMStateNodeData state in this.Context.RunTimeFSMContorller.states)
                 {
-                    FSMStateNodeData fromSatteData = this.Context.RunTimeFSMContorller.states.Where(x => x.name == item.fromState).FirstOrDefault();
-                    FSMStateNodeData toStateData = this.Context.RunTimeFSMContorller.states.Where(x => x.name == item.toState).FirstOrDefault();
-
-                    if (fromSatteData == null || toStateData == null) return;
-
-                    Rect fromRect = GetTransfromRect(fromSatteData.rect);
-                    Rect toRect = GetTransfromRect(toStateData.rect);
-
-                    Vector2 offset = GetTransitionOffset(fromRect.center, toRect.center);
-                    Vector2 fromPos = fromRect.center + offset;
-                    Vector2 toPos = toRect.center + offset;
-
-                    float width = Mathf.Clamp(Mathf.Abs(toPos.x - fromPos.x), 10f, Mathf.Abs(toPos.x - fromPos.x));
-                    float height = Mathf.Clamp(Mathf.Abs(toPos.y - fromPos.y), 10f, Mathf.Abs(toPos.y - fromPos.y));
-                    Rect rect = new Rect(0, 0, width, height);
-                    rect.center = fromPos + (toPos - fromPos) * 0.5f;
-
-                    if (rect.IsContainsCurrentMouse())
+                    foreach (FSMTranslationData item in state.trasitions)
                     {
-                        if (GetMinDistanceToLine(fromPos, toPos, Event.current.mousePosition))
+                        FSMStateNodeData fromSatteData = this.Context.RunTimeFSMContorller.states.Where(x => x.name == item.fromState).FirstOrDefault();
+                        FSMStateNodeData toStateData = this.Context.RunTimeFSMContorller.states.Where(x => x.name == item.toState).FirstOrDefault();
+
+                        Rect fromRect = GetTransfromRect(fromSatteData.rect);
+                        Rect toRect = GetTransfromRect(toStateData.rect);
+
+                        Vector2 offset = GetTransitionOffset(fromRect.center, toRect.center);
+                        Vector2 fromPos = fromRect.center + offset;
+                        Vector2 toPos = toRect.center + offset;
+
+                        float width = Mathf.Clamp(Mathf.Abs(toPos.x - fromPos.x), 10f, Mathf.Abs(toPos.x - fromPos.x));
+                        float height = Mathf.Clamp(Mathf.Abs(toPos.y - fromPos.y), 10f, Mathf.Abs(toPos.y - fromPos.y));
+                        Rect rect = new Rect(0, 0, width, height);
+                        rect.center = fromPos + (toPos - fromPos) * 0.5f;
+
+                        if (rect.IsContainsCurrentMouse())
                         {
-                            this.Context.SelectTransition = item;
-                            ShowInspactor(item);
-                            Event.current.Use();
-                            break;
+                            if (GetMinDistanceToLine(fromPos, toPos, Event.current.mousePosition))
+                            {
+                                ShowInspactor(item);
+                                //this.Context.SelectTransition = item;
+                                Event.current.Use();
+                                break;
+                            }
                         }
                     }
                 }
@@ -133,7 +150,8 @@ namespace AE_FSM
         {
             FSMStateNodeData fromState = this.Context.RunTimeFSMContorller.states.Where(x => x.name == start).FirstOrDefault();
             FSMStateNodeData toState = this.Context.RunTimeFSMContorller.states.Where(x => x.name == end).FirstOrDefault();
-            DrawTransition(fromState, toState, color, isShowArrow);
+
+            DrawTransition(fromState, toState, color, isShowArrow, 0);
         }
 
         /// <summary>
@@ -143,7 +161,7 @@ namespace AE_FSM
         /// <param name="end"></param>
         /// <param name="color"></param>
         /// <param name="isShowArrow"></param>
-        private void DrawTransition(FSMStateNodeData start, FSMStateNodeData end, Color color, bool isShowArrow = true)
+        private void DrawTransition(FSMStateNodeData start, FSMStateNodeData end, Color color, bool isShowArrow = true, int ArrowIndex = 0)
         {
             if (start == null || end == null) return;
 
@@ -156,7 +174,7 @@ namespace AE_FSM
                 this.posotion.Contains(endRect.center + offset) ||
                 this.posotion.Contains((endRect.center - startRect.center) * 0.5f + startRect.center + offset))
             {
-                DrawTransition(startRect.center + offset, endRect.center + offset, color, isShowArrow);
+                DrawTransition(startRect.center + offset, endRect.center + offset, color, isShowArrow, ArrowIndex);
             }
         }
 
@@ -193,7 +211,7 @@ namespace AE_FSM
         /// <param name="end"></param>
         /// <param name="color"></param>
         /// <param name="isShowArrow"></param>
-        private void DrawTransition(Vector2 start, Vector2 end, Color color, bool isShowArrow = true)
+        private void DrawTransition(Vector2 start, Vector2 end, Color color, bool isShowArrow = true, int ArrowIndex = 0)
         {
             Handles.BeginGUI();
 
@@ -204,7 +222,7 @@ namespace AE_FSM
             {
                 Vector2 direction = end - start;
 
-                Vector2 lineCenter = start + (direction / 2);
+                Vector2 lineCenter = start + (direction / 2) * (1 + ArrowIndex * 30);
 
                 Vector2 cross = Vector3.Cross(direction, Vector3.forward);
 

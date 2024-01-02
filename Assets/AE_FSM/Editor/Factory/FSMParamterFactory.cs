@@ -44,19 +44,23 @@ namespace AE_FSM
 
             List<FSMTranslationData> translationDatas = new List<FSMTranslationData>();
 
-            foreach (FSMTranslationData translation in contorller.trasitions)
+            foreach (FSMStateNodeData state in contorller.states)
             {
-                if (translation.conditions == null) break;
-
-                foreach (FSMConditionData condition in translation.conditions)
+                foreach (FSMTranslationData translation in state.trasitions)
                 {
-                    if (condition.paramterName != null && condition.paramterName == parameterData.name)
+                    if (translation.conditions == null) break;
+
+                    foreach (FSMConditionData condition in translation.conditions)
                     {
-                        translationDatas.Add(translation);
-                        break;
+                        if (condition.paramterName != null && condition.paramterName == parameterData.name)
+                        {
+                            translationDatas.Add(translation);
+                            break;
+                        }
                     }
                 }
             }
+
 
             if (translationDatas.Count == 0)
             {
@@ -104,14 +108,17 @@ namespace AE_FSM
                 Debug.Log("已经有该参数!!!"); return;
             }
 
-            foreach (FSMTranslationData itemTrasition in controller.trasitions)
+            foreach (FSMStateNodeData state in controller.states)
             {
-                if ( itemTrasition.conditions == null || itemTrasition.conditions.Count() == 0) { continue; }
-                foreach (FSMConditionData itemCondition in itemTrasition.conditions)
+                foreach (FSMTranslationData itemTrasition in state.trasitions)
                 {
-                    if (itemCondition.paramterName == parameterData.name)
+                    if (itemTrasition.conditions == null || itemTrasition.conditions.Count() == 0) { continue; }
+                    foreach (FSMConditionData itemCondition in itemTrasition.conditions)
                     {
-                        itemCondition.paramterName = newName;
+                        if (itemCondition.paramterName == parameterData.name)
+                        {
+                            itemCondition.paramterName = newName;
+                        }
                     }
                 }
             }

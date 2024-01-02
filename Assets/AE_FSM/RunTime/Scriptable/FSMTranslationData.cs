@@ -7,9 +7,9 @@ namespace AE_FSM
     public class FSMTranslationData
     {
         public string fromState;
+
         public string toState;
 
         public List<FSMConditionData> conditions;
-
     }
 }

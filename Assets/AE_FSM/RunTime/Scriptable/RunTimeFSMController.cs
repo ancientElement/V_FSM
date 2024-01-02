@@ -15,10 +15,10 @@ namespace AE_FSM
         /// </summary>
         public List<FSMParameterData> paramters = new List<FSMParameterData>();
 
-        /// <summary>
-        /// 所有的过渡
-        /// </summary>
-        public List<FSMTranslationData> trasitions = new List<FSMTranslationData>();
+        ///// <summary>
+        ///// 所有的过渡
+        ///// </summary>
+        //public List<FSMTranslationData> trasitions = new List<FSMTranslationData>();
 
         public void Save()
         {

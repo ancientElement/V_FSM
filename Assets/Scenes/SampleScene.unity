@@ -332,7 +332,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runTimeFSMController: {fileID: 11400000, guid: 9be4aef28a040874683b4572cfc1c7bc, type: 2}
-  exitTime: 0.1
+  DefaultExitTime: 0.05
   isExitingState: 0
 --- !u!4 &1117780137
 Transform:
@@ -363,3 +363,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackTime: 0.5
   controller: {fileID: 1117780136}
+  test: 0

@@ -19,7 +19,6 @@ namespace AE_FSM
         private FSMConditionData conditionData;
         private FSMParameterData parameterData;
 
-        public Action onConditionMeet;//条件满足时的委托
         public ConditionState state { get; private set; } = ConditionState.NotMeet;// 条件状态
 
         /// <summary>
@@ -73,7 +72,6 @@ namespace AE_FSM
             if (compare.IsMeetCondition(this.parameterData, this.conditionData.tragetValue))
             {
                 state = ConditionState.Meet;
-                onConditionMeet?.Invoke();
             }
             else
             {

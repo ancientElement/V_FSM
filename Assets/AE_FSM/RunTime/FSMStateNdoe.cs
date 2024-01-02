@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
 
 namespace AE_FSM
 {
@@ -6,6 +8,7 @@ namespace AE_FSM
     {
         public FSMStateNodeData stateNodeData;
         public FSMController controller;
+        public List<FSMTransition> transitions = new List<FSMTransition>();
 
         public FSMStateNode(FSMStateNodeData stateNodeData, FSMController controller)
         {
@@ -16,11 +19,12 @@ namespace AE_FSM
         public void Enter()
         {
             controller.excuteState.Enter(this);
-            controller.CheckTransfrom();
         }
+
         public void Update()
         {
             controller.excuteState.Update(this);
+            controller.CheckTransfrom();
         }
         public void LateUpdate()
         {

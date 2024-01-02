@@ -194,9 +194,13 @@ namespace AE_FSMGV
                 DrawEdge(FSMConst.enterState, defualtState, null);
             }
 
-            foreach (var item in this.Context.RunTimeFSMContorller.trasitions)
+            foreach (var state in this.Context.RunTimeFSMContorller.states)
             {
-                DrawEdge(item.fromState, item.toState, item);
+                foreach (var item in state.trasitions)
+                {
+
+                    DrawEdge(item.fromState, item.toState, item);
+                }
             }
         }
 

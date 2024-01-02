@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AE_FSM
@@ -24,5 +25,7 @@ namespace AE_FSM
         /// 脚本的名称
         /// </summary>
         public string scriptName;
+
+        public List<FSMTranslationData> trasitions = new List<FSMTranslationData>();
     }
 }

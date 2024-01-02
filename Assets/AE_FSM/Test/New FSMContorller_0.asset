@@ -15,57 +15,88 @@ MonoBehaviour:
   states:
   - rect:
       serializedVersion: 2
-      x: 1622.1902
-      y: -225.47624
+      x: 132.18982
+      y: -268.8094
       width: 480
       height: 90
     defualtState: 0
     name: AnyState
     scriptName: 
+    trasitions: []
   - rect:
       serializedVersion: 2
-      x: 1635.9999
-      y: -42.09529
+      x: 136
+      y: -125.42866
       width: 480
       height: 90
     defualtState: 0
     name: EnterState
     scriptName: 
+    trasitions: []
   - rect:
       serializedVersion: 2
-      x: 1634.617
-      y: 370.25714
-      width: 480
-      height: 90
-    defualtState: 0
-    name: Move
-    scriptName: Move
-  - rect:
-      serializedVersion: 2
-      x: 1664.5874
-      y: 168.0345
-      width: 480
-      height: 90
-    defualtState: 1
-    name: Idle
-    scriptName: Idle
-  - rect:
-      serializedVersion: 2
-      x: 2244.4119
-      y: 253.96481
+      x: -146.40013
+      y: 275.9332
       width: 480
       height: 90
     defualtState: 0
     name: Attack
     scriptName: Attack
+    trasitions:
+    - fromState: Attack
+      toState: Idle
+      conditions:
+      - tragetValue: 0
+        paramterName: New Bool_0
+        compareType: 2
+  - rect:
+      serializedVersion: 2
+      x: 143.60005
+      y: 49.266872
+      width: 480
+      height: 90
+    defualtState: 1
+    name: Idle
+    scriptName: Idle
+    trasitions:
+    - fromState: Idle
+      toState: Attack
+      conditions:
+      - tragetValue: 1
+        paramterName: New Bool_0
+        compareType: 2
+    - fromState: Idle
+      toState: Move
+      conditions: []
+    - fromState: Idle
+      toState: Move
+      conditions: []
+  - rect:
+      serializedVersion: 2
+      x: 465.38287
+      y: 291.66312
+      width: 480
+      height: 90
+    defualtState: 0
+    name: Move
+    scriptName: Move
+    trasitions:
+    - fromState: Move
+      toState: Idle
+      conditions:
+      - tragetValue: 0.000001
+        paramterName: New Float_0
+        compareType: 1
+      - tragetValue: 0.000001
+        paramterName: New Float_1
+        compareType: 1
   paramters:
+  - name: New Bool_0
+    value: 0
+    paramterType: 2
   - name: New Float_0
     value: 0
     paramterType: 0
-  trasitions:
-  - fromState: Idle
-    toState: Move
-    conditions:
-    - tragetValue: 0
-      paramterName: New Float_0
-      compareType: 0
+  - name: New Float_1
+    value: 0
+    paramterType: 0

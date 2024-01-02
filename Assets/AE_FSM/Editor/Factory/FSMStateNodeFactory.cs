@@ -75,11 +75,14 @@ namespace AE_FSM
             }
 
             //过渡相关
-            for (int i = contorller.trasitions.Count - 1; i >= 0; i--)
+            foreach (FSMStateNodeData item in contorller.states)
             {
-                if (contorller.trasitions[i].fromState == nodeData.name || contorller.trasitions[i].toState == nodeData.name)
+                for (int i = item.trasitions.Count - 1; i >= 0; i--)
                 {
-                    contorller.trasitions.RemoveAt(i);
+                    if (item.trasitions[i].fromState == nodeData.name || item.trasitions[i].toState == nodeData.name)
+                    {
+                        item.trasitions.RemoveAt(i);
+                    }
                 }
             }
 
@@ -116,15 +119,18 @@ namespace AE_FSM
 
             Debug.Log("**************");
             //相关过渡
-            foreach (FSMTranslationData item in contorller.trasitions)
+            foreach (FSMStateNodeData item_state in contorller.states)
             {
-                if (item.toState == nodeData.name)
+                foreach (FSMTranslationData item in item_state.trasitions)
                 {
-                    item.toState = newName;
-                }
-                if (item.fromState == nodeData.name)
-                {
-                    item.fromState = newName;
+                    if (item.toState == nodeData.name)
+                    {
+                        item.toState = newName;
+                    }
+                    if (item.fromState == nodeData.name)
+                    {
+                        item.fromState = newName;
+                    }
                 }
             }
 
