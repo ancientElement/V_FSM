@@ -310,8 +310,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1117780137}
-  - component: {fileID: 1117780136}
   - component: {fileID: 1117780138}
+  - component: {fileID: 1117780139}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -319,21 +319,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1117780136
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1117780135}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9a4d031e13b61249aa9ba2b2cb54539, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  runTimeFSMController: {fileID: 11400000, guid: 9be4aef28a040874683b4572cfc1c7bc, type: 2}
-  DefaultExitTime: 0.05
-  isExitingState: 0
 --- !u!4 &1117780137
 Transform:
   m_ObjectHideFlags: 0
@@ -361,6 +346,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bccb6bf887aa73445a1287e31c62377e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackTime: 0.5
-  controller: {fileID: 1117780136}
+  controller: {fileID: 1117780139}
   test: 0
+--- !u!114 &1117780139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1117780135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9a4d031e13b61249aa9ba2b2cb54539, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runTimeFSMController: {fileID: 11400000, guid: 9be4aef28a040874683b4572cfc1c7bc, type: 2}
+  DefaultExitTime: 0.1
+  isExitingState: 0

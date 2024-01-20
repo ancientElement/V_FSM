@@ -1,12 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
-using UnityEditorInternal;
 using UnityEngine;
-using static UnityEditor.Progress;
-using static UnityEditorInternal.VersionControl.ListControl;
 
 namespace AE_FSM
 {
@@ -106,7 +100,7 @@ namespace AE_FSM
         /// <summary>
         /// 初始化
         /// </summary>
-        public void Init()
+        public virtual void Init()
         {
             //复制数据
             if (runTimeFSMController == null) return;
@@ -171,7 +165,9 @@ namespace AE_FSM
         public void CheckTransfrom()
         {
             foreach (FSMTransition item in currentState.transitions)
-            {
+            { 
+                //TODO:先用最愚蠢的办法
+                if (item.translationData.fromState != currentState.stateNodeData.name) continue;
                 item.CheckAllConditionMeet();
             }
         }
@@ -214,7 +210,7 @@ namespace AE_FSM
 
         #endregion
 
-
+        #region  切换状态
         public void SwitchState(string state, float exitTime = 0f, bool toself = false)
         {
             isSwitching = true;
@@ -271,5 +267,6 @@ namespace AE_FSM
             isSwitching = false;
             yield break;
         }
+        #endregion
     }
 }

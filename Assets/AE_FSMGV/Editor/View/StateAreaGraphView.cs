@@ -172,7 +172,7 @@ namespace AE_FSMGV
         {
             var rect = new Rect(0, 0, FSMConst.stateWidth, FSMConst.stateHeight);
             rect.center = mousePosition;
-            var stateNode = FSMStateNodeFactory.CreateFSMNode(this.Context.RunTimeFSMContorller, scriptName, this.Context.RunTimeFSMContorller.states.Count == 2, rect, scriptName);
+            var stateNode = FSMStateNodeFactory.CreateFSMNode(this.Context.RunTimeFSMContorller, scriptName, null,this.Context.RunTimeFSMContorller.states.Count == 2, rect, scriptName);
             DrawNode(stateNode);
         }
 

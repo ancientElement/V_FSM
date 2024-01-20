@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
@@ -12,7 +11,6 @@ namespace AE_FSM
         private ReorderableList reorderableList;
         private int clickCount;
         private int preListIndex;
-        private float timer;
 
         private void OnEnable()
         {
@@ -56,21 +54,30 @@ namespace AE_FSM
 
             EditorGUI.BeginDisabledGroup(disable);
 
+            //脚本名
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("scriptName", GUILayout.Width(80));
             helper.stateNodeData.scriptName = EditorGUILayout.DelayedTextField(helper.stateNodeData.scriptName);
-
             if (helper.stateNodeData.scriptName != stateName)
             {
                 stateName = helper.stateNodeData.scriptName;
                 EditorUtility.SetDirty(helper.contorller);
             }
+            EditorGUILayout.EndHorizontal();
 
-
+            //脚本文件
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("script", GUILayout.Width(80));
+            MonoScript tempScript = (MonoScript)EditorGUILayout.ObjectField(helper.stateNodeData.script, typeof(MonoScript), false);
+            if (tempScript != helper.stateNodeData.script)
+            {
+                helper.stateNodeData.script = tempScript;
+                EditorUtility.SetDirty(helper.contorller);
+                AssetDatabase.SaveAssetIfDirty(helper.contorller);
+            }
             EditorGUILayout.EndHorizontal();
 
             reorderableList.DoLayoutList();
-
             EditorGUI.EndDisabledGroup();
         }
 
@@ -115,6 +122,7 @@ namespace AE_FSM
             FSMStateInspectorHelper helper = target as FSMStateInspectorHelper;
             if (helper == null) return;
             FSMTranslationInspectorHelper.Instance.Inspector(helper.contorller, helper.stateNodeData.trasitions[list.index]);
+            FSMEditorWindow.GetWindow<FSMEditorWindow>().Repaint();
         }
 
         private bool CanAddOrDeleteParamter(ReorderableList list)
@@ -135,6 +143,7 @@ namespace AE_FSM
             if (helper == null) return;
             if (index < 0 || index >= helper.stateNodeData.trasitions.Count) return;
             EditorGUI.LabelField(rect, helper.stateNodeData.trasitions[index].fromState + "--->" + helper.stateNodeData.trasitions[index].toState);
+            Repaint();
         }
 
         private void RemoveParamter(ReorderableList list)

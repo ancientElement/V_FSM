@@ -1,0 +1,119 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bac8007dd04da848bb241efddd58ec8, type: 3}
+  m_Name: New FSMContorller_0
+  m_EditorClassIdentifier: 
+  states:
+  - rect:
+      serializedVersion: 2
+      x: 118.85648
+      y: -255.47603
+      width: 480
+      height: 90
+    defualtState: 0
+    name: AnyState
+    scriptName: 
+    script: {fileID: 0}
+    trasitions: []
+  - rect:
+      serializedVersion: 2
+      x: 109.33333
+      y: -105.42864
+      width: 480
+      height: 90
+    defualtState: 0
+    name: EnterState
+    scriptName: 
+    script: {fileID: 0}
+    trasitions: []
+  - rect:
+      serializedVersion: 2
+      x: -176.00005
+      y: 376.59998
+      width: 480
+      height: 90
+    defualtState: 0
+    name: Move
+    scriptName: Move
+    script: {fileID: 11500000, guid: 2e6ac050d72ebd74bb3056e51379c2ea, type: 3}
+    trasitions:
+    - fromState: Move
+      toState: Attack
+      conditions:
+      - tragetValue: 1
+        paramterName: Attack
+        compareType: 2
+    - fromState: Move
+      toState: Idle
+      conditions:
+      - tragetValue: 0.000001
+        paramterName: Velocty
+        compareType: 1
+  - rect:
+      serializedVersion: 2
+      x: 444.00006
+      y: 383.2666
+      width: 480
+      height: 90
+    defualtState: 0
+    name: Attack
+    scriptName: Attack
+    script: {fileID: 11500000, guid: b74cb24c14722a6499ecf405c4844698, type: 3}
+    trasitions:
+    - fromState: Attack
+      toState: Move
+      conditions:
+      - tragetValue: 0
+        paramterName: Attack
+        compareType: 2
+      - tragetValue: 0.000001
+        paramterName: Velocty
+        compareType: 0
+    - fromState: Attack
+      toState: Idle
+      conditions:
+      - tragetValue: 0
+        paramterName: Attack
+        compareType: 2
+      - tragetValue: 0.000001
+        paramterName: Velocty
+        compareType: 1
+  - rect:
+      serializedVersion: 2
+      x: 110.666626
+      y: 96.60004
+      width: 480
+      height: 90
+    defualtState: 1
+    name: Idle
+    scriptName: Idle
+    script: {fileID: 11500000, guid: 98587ed1d1a266c439fb89519363e365, type: 3}
+    trasitions:
+    - fromState: Idle
+      toState: Move
+      conditions:
+      - tragetValue: 0.000001
+        paramterName: Velocty
+        compareType: 0
+    - fromState: Idle
+      toState: Attack
+      conditions:
+      - tragetValue: 1
+        paramterName: Attack
+        compareType: 2
+  paramters:
+  - name: Attack
+    value: 0
+    paramterType: 2
+  - name: Velocty
+    value: 0
+    paramterType: 0
