@@ -12,6 +12,7 @@ namespace AE_FSM
             this.contorller = contorller;
             this.stateNodeData = stateNodeData;
             Selection.activeObject = this;
+
         }
     }
 }

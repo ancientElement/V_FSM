@@ -347,7 +347,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 1117780139}
-  test: 0
+  Paramter1_f: 0
+  Paramter1_b: 0
+  Paramter1: Velocty
+  Paramter2: Attack
 --- !u!114 &1117780139
 MonoBehaviour:
   m_ObjectHideFlags: 0

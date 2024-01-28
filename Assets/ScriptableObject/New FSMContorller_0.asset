@@ -110,6 +110,20 @@ MonoBehaviour:
       - tragetValue: 1
         paramterName: Attack
         compareType: 2
+  - rect:
+      serializedVersion: 2
+      x: 147.33327
+      y: 619.93335
+      width: 480
+      height: 90
+    defualtState: 0
+    name: Jump
+    scriptName: Jump
+    script: {fileID: 11500000, guid: 2988306b1fbc3cb45a07a79f8f642604, type: 3}
+    trasitions:
+    - fromState: Jump
+      toState: Move
+      conditions: []
   paramters:
   - name: Attack
     value: 0

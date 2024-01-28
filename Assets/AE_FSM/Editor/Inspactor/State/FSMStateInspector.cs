@@ -1,4 +1,8 @@
-﻿using UnityEditor;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Remoting.Messaging;
+using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
@@ -11,49 +15,45 @@ namespace AE_FSM
         private ReorderableList reorderableList;
         private int clickCount;
         private int preListIndex;
+        public const float elemetHeadHeight = 25f;
+
+        private List<FSMConditionInspectorReorderableList> conditionreorderableLists;
 
         private void OnEnable()
         {
             FSMStateInspectorHelper helper = target as FSMStateInspectorHelper;
             if (helper == null) return;
-            reorderableList = new ReorderableList(helper.stateNodeData.trasitions, typeof(FSMTranslationData), true, false, false, true);
+            reorderableList = new ReorderableList(helper.stateNodeData.trasitions, typeof(FSMTranslationData), true, true, false, true);
             reorderableList.onRemoveCallback += RemoveParamter;
             reorderableList.drawElementCallback += DrawOneParamter;
             reorderableList.onCanAddCallback += CanAddOrDeleteParamter;
-            reorderableList.onMouseUpCallback = (ReorderableList list) =>
+            reorderableList.onMouseUpCallback = OnMouseUpCallbackParamter;
+            reorderableList.drawHeaderCallback += DrawHeaderParamter;
+            reorderableList.elementHeightCallback += ElementHeightCallbackParamter;
+            Init();
+        }
+
+        public void Init()
+        {
+            FSMStateInspectorHelper helper = target as FSMStateInspectorHelper;
+            if (helper == null) return;
+            conditionreorderableLists = new List<FSMConditionInspectorReorderableList>();
+            for (int i = 0; i < helper.stateNodeData.trasitions.Count; i++)
             {
-                if (Event.current.button == 0)
-                {
-                    if (preListIndex == list.index)
-                    {
-                        clickCount++;
-                    }
-                    else if (preListIndex != list.index)
-                    {
-                        clickCount = 0;
-                    }
-
-                    if (clickCount == 2)
-                    {
-                        clickCount = 0;
-                        // 双击事件处理逻辑
-                        SelectCallback(list);
-                    }
-
-                    preListIndex = list.index;
-                }
-            };
+                int index = i;
+                conditionreorderableLists.Add(new FSMConditionInspectorReorderableList(helper.stateNodeData.trasitions[index].conditions, helper.contorller, helper.stateNodeData.trasitions[index]));
+            }
         }
 
         public override void OnInspectorGUI()
         {
             FSMStateInspectorHelper helper = target as FSMStateInspectorHelper;
             if (helper == null) return;
+            reorderableList.list = helper.stateNodeData.trasitions;
 
             bool disable = EditorApplication.isPlaying || helper.stateNodeData.name == FSMConst.enterState || helper.stateNodeData.name == FSMConst.anyState;
 
             EditorGUI.BeginDisabledGroup(disable);
-
             //脚本名
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("scriptName", GUILayout.Width(80));
@@ -77,7 +77,13 @@ namespace AE_FSM
             }
             EditorGUILayout.EndHorizontal();
 
+            //过渡列表
             reorderableList.DoLayoutList();
+            for (int i = 0; i < helper.stateNodeData.trasitions.Count; i++)
+            {
+                int index = i;
+                conditionreorderableLists[index].UpdateList(helper.stateNodeData.trasitions[index].conditions);
+            }
             EditorGUI.EndDisabledGroup();
         }
 
@@ -117,6 +123,61 @@ namespace AE_FSM
             EditorGUILayout.EndHorizontal();
         }
 
+        /// <summary>
+        /// 高度
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        private float ElementHeightCallbackParamter(int index)
+        {
+            FSMStateInspectorHelper helper = target as FSMStateInspectorHelper;
+            if (helper == null) return elemetHeadHeight;
+
+            int num = helper.stateNodeData.trasitions[index].conditions.Count;
+
+            return elemetHeadHeight * (num + 2) + 20f;
+        }
+        /// <summary>
+        /// 绘制头部
+        /// </summary>
+        /// <param name="rect"></param>
+        private void DrawHeaderParamter(Rect rect)
+        {
+            GUI.Label(rect, "Transition");
+        }
+        /// <summary>
+        /// 双击
+        /// </summary>
+        /// <param name="list"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void OnMouseUpCallbackParamter(ReorderableList list)
+        {
+            if (Event.current.button == 0)
+            {
+                if (preListIndex == list.index)
+                {
+                    clickCount++;
+                }
+                else if (preListIndex != list.index)
+                {
+                    clickCount = 0;
+                }
+
+                if (clickCount == 2)
+                {
+                    clickCount = 0;
+                    // 双击事件处理逻辑
+                    SelectCallback(list);
+                }
+
+                preListIndex = list.index;
+            }
+        }
+        /// <summary>
+        /// 选择
+        /// </summary>
+        /// <param name="list"></param>
         private void SelectCallback(ReorderableList list)
         {
             FSMStateInspectorHelper helper = target as FSMStateInspectorHelper;
@@ -124,12 +185,15 @@ namespace AE_FSM
             FSMTranslationInspectorHelper.Instance.Inspector(helper.contorller, helper.stateNodeData.trasitions[list.index]);
             FSMEditorWindow.GetWindow<FSMEditorWindow>().Repaint();
         }
-
+        /// <summary>
+        /// 是否可以移除
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
         private bool CanAddOrDeleteParamter(ReorderableList list)
         {
             return Application.isPlaying == false;
         }
-
         /// <summary>
         /// 绘制
         /// </summary>
@@ -141,11 +205,18 @@ namespace AE_FSM
         {
             FSMStateInspectorHelper helper = target as FSMStateInspectorHelper;
             if (helper == null) return;
-            if (index < 0 || index >= helper.stateNodeData.trasitions.Count) return;
-            EditorGUI.LabelField(rect, helper.stateNodeData.trasitions[index].fromState + "--->" + helper.stateNodeData.trasitions[index].toState);
             Repaint();
+            Init();
+            if (index > helper.stateNodeData.trasitions.Count) return;
+            Rect headRect = new Rect(rect.x, rect.y, rect.width, elemetHeadHeight);
+            Rect mainRect = new Rect(rect.x, rect.y + elemetHeadHeight, rect.width, elemetHeadHeight * helper.stateNodeData.trasitions[index].conditions.Count);
+            EditorGUI.LabelField(headRect, helper.stateNodeData.trasitions[index].fromState + "--->" + helper.stateNodeData.trasitions[index].toState);
+            conditionreorderableLists[index].DoList(mainRect);
         }
-
+        /// <summary>
+        /// 移除
+        /// </summary>
+        /// <param name="list"></param>
         private void RemoveParamter(ReorderableList list)
         {
             //TODO

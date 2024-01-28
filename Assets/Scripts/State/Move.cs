@@ -10,7 +10,7 @@ public class Move : IFSMState
         Debug.Log(this.GetType().ToString() + controller.gameObject.name + "sss" + "Enter");
 
     }
-    public void Update(FSMController controller)
+    public void OnUpdate(FSMController controller)
     {
        
     }

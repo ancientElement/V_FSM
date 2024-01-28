@@ -1,11 +1,9 @@
-﻿using AE_FSM;
-using UnityEngine;
+using AE_FSM;
 
-public class Idle : IFSMState
+public class Jump : IFSMState
 {
     public void Enter(FSMController controller)
     {
-        Debug.Log(this.GetType().ToString() + controller.gameObject.name + "sss" + "Enter");
     }
 
     public void Exit(FSMController controller)

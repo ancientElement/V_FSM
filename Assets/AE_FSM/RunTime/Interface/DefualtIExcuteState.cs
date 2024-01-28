@@ -23,7 +23,7 @@ namespace AE_FSM
             IFSMState state = GetState(node.stateNodeData.scriptName, node.stateNodeData.script);
             if (state != null)
             {
-                state.Update(node.controller);
+                state.OnUpdate(node.controller);
             }
         }
         public void LaterUpdate(FSMStateNode node)
