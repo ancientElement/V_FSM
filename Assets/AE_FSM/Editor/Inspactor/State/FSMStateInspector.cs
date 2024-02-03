@@ -134,7 +134,7 @@ namespace AE_FSM
             FSMStateInspectorHelper helper = target as FSMStateInspectorHelper;
             if (helper == null) return elemetHeadHeight;
 
-            int num = helper.stateNodeData.trasitions[index].conditions.Count;
+            int num = helper.stateNodeData.trasitions[index].conditions == null ? 1 : helper.stateNodeData.trasitions[index].conditions.Count;
 
             return elemetHeadHeight * (num + 2) + 20f;
         }
@@ -209,8 +209,11 @@ namespace AE_FSM
             Init();
             if (index > helper.stateNodeData.trasitions.Count) return;
             Rect headRect = new Rect(rect.x, rect.y, rect.width, elemetHeadHeight);
-            Rect mainRect = new Rect(rect.x, rect.y + elemetHeadHeight, rect.width, elemetHeadHeight * helper.stateNodeData.trasitions[index].conditions.Count);
             EditorGUI.LabelField(headRect, helper.stateNodeData.trasitions[index].fromState + "--->" + helper.stateNodeData.trasitions[index].toState);
+
+            int num = helper.stateNodeData.trasitions[index].conditions == null ? 1 : helper.stateNodeData.trasitions[index].conditions.Count;
+
+            Rect mainRect = new Rect(rect.x, rect.y + elemetHeadHeight, rect.width, elemetHeadHeight * num);
             conditionreorderableLists[index].DoList(mainRect);
         }
         /// <summary>
